@@ -107,17 +107,17 @@ def test_print_line(line):
     #pass
 
 def test_both_back(result):
-    print "--both"
+    print "---test_both_back"
     print result
     reactor.stop()
     print "%s" % datetime.datetime.now()
 
 def test_call_back(result):
-    print "---success"
+    print "---test_call_back"
     print result
 
 def test_error_back(result):
-    print "----error"
+    print "---test_error_back"
     print result
 
 if __name__ == '__main__':
