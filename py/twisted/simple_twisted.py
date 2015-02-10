@@ -21,14 +21,19 @@ def main(list = "",func = "",call_back = ""):
     deferlist = []
     for item in list:
         d = threads.deferToThread(func,item)
-        d.addCallbacks(test_call_back, test_error_back)
+        #case_3
+        #d.addCallbacks(test_call_back, test_error_back)
+        # 数组会超级大 
         deferlist.append(d)
-    # 数组会超级大 
-    deferlist.append(d)
 
+    #case_1
+    #dl = defer.DeferredList(deferlist)
+    #case_2
     #dl = defer.DeferredList(deferlist, consumeErrors = True)
-    #dl = defer.DeferredList(deferlist, consumeErrors = True, fireOnOneErrback = 1)
-    dl = defer.DeferredList(deferlist, fireOnOneErrback = 1)
+    #case_4
+    #dl = defer.DeferredList(deferlist, fireOnOneErrback = True)
+    #case_5 
+    dl = defer.DeferredList(deferlist, consumeErrors = True, fireOnOneErrback = True)
     dl.addCallback(test_dl_call_back)
     dl.addErrback(test_dl_error_back) #标准的DeferredList不会调用errback
     dl.addBoth(call_back)
@@ -39,12 +44,11 @@ def test_print_line(line):
     time.sleep(random.randint(1, 2))
     if line == '2':
         raise Exception
-    #logging.warning(line)
-    return line #需要有return 才能触发main_db 中的reactor.stop
-    #pass
+    return line*10 #return 即是call back的传入参数
 
 def test_call_back(result):
     print "---test_call_back : %s" % result
+    return result
 
 def test_error_back(result):
     print "---test_error_back"
@@ -60,6 +64,7 @@ def test_dl_both_back(result):
     print "%s" % datetime.datetime.now()
 
 def test_dl_call_back(result):
+    """ [(True, None), (True, None), (True, None), (True, None), (True, None), (True, None)] """
     print "---test_dl_call_back"
     print result
 
@@ -81,11 +86,4 @@ if __name__ == '__main__':
 """
 场景：有时候我们需要在几个不同的事件都发生了才被通知，而不是分别等待每个事件。例如，我们可能需要等待一个列表中的连接全部关闭。
 使用：twisted.internet.defer.DeferredList
-
 """
-
-
-
-
-
-
