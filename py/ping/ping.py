@@ -88,11 +88,13 @@ class Ping(object):
         self.destination = destination
         self.timeout = timeout
         self.packet_size = packet_size
+        # 一个十六位的 own_id
         if own_id is None:
             self.own_id = os.getpid() & 0xFFFF
         else:
             self.own_id = own_id
 
+        # 域名解析(直接是个IP地址也没有问题)
         try:
             # FIXME: Use destination only for display this line here? see: https://github.com/jedie/python-ping/issues/3
             self.dest_ip = socket.gethostbyname(self.destination)
