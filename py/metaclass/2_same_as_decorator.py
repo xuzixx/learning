@@ -24,6 +24,7 @@ class Operation(object):
 
 def main():
     """
+    2、批量的对某些方法使用decorator，而不需要每次都在方法的上面加入@decorator_func
     给 Operation 的实例的所有方法 都添加过滤
     可以不用在delete函数上面写@login_required, 也能达到decorator的效果了。不过可读性就差点了。
     """
