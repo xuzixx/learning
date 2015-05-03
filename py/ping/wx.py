@@ -1,31 +1,10 @@
 #!/usr/bin/python
 # coding: utf-8
 
-"""
-    A pure python ping implementation using raw sockets.
-
-    Note that ICMP messages can only be send from processes running as root
-    (in Windows, you must run this script as 'Administrator').
-
-    Bugs are naturally mine. I'd be glad to hear about them. There are
-    certainly word - size dependencies here.
-    
-    :homepage: https://github.com/jedie/python-ping/
-    :copyleft: 1989-2011 by the python-ping team, see AUTHORS for more details.
-    :license: GNU GPL v2, see LICENSE for more details.
-"""
-
-
 import os, sys, socket, struct, select, time, signal
 
 
-if sys.platform == "win32":
-    # On Windows, the best timer is time.clock()
-    default_timer = time.clock
-else:
-    # On most other platforms the best timer is time.time()
-    default_timer = time.time
-
+default_timer = time.time
 
 # ICMP parameters
 ICMP_ECHOREPLY = 0 # Echo reply (per RFC792)
@@ -33,7 +12,6 @@ ICMP_ECHO = 8 # Echo request (per RFC792)
 ICMP_MAX_RECV = 2048 # Max size of incoming buffer
 
 MAX_SLEEP = 1000 # 发包间隔
-
 
 def calculate_checksum(source_string):
     """
@@ -84,16 +62,19 @@ class HeaderInformation(dict):
 
 
 class Ping(object):
-    def __init__(self, destination, timeout=1000, packet_size=55, own_id=None):
+    def __init__(self, destination, timeout = 1000, packet_size = 55, own_id = None):
+        """
+        timeout 毫秒
+        """
         self.destination = destination
         self.timeout = timeout
         self.packet_size = packet_size
-        # 一个十六位的 own_id
+
+        # 保证获取一个十六位的 own_id
         if own_id is None:
             self.own_id = os.getpid() & 0xFFFF
         else:
             self.own_id = own_id
-
         # 域名解析(直接是个IP地址也没有问题)
         try:
             # FIXME: Use destination only for display this line here? see: https://github.com/jedie/python-ping/issues/3
@@ -157,7 +138,6 @@ class Ping(object):
         print("")
 
     #--------------------------------------------------------------------------
-
     def signal_handler(self, signum, frame):
         """
         Handle print_exit via signals
@@ -172,9 +152,9 @@ class Ping(object):
             # Handle Ctrl-Break e.g. under Windows 
             signal.signal(signal.SIGBREAK, self.signal_handler)
 
-    #--------------------------------------------------------------------------
 
-    def run(self, count=None, deadline=None):
+    #--------------------------------------------------------------------------
+    def run(self, count = None, deadline = None):
         """
         send and receive pings in a loop. Stop if count or until deadline.
         """
@@ -189,8 +169,9 @@ class Ping(object):
             if deadline and self.total_time >= deadline:
                 break
 
-            if delay == None:
-                delay = 0
+            # 代码不return None，该为直接return 0
+            #if delay == None:
+            #    delay = 0
 
             # Pause for the remainder of the MAX_SLEEP period (if applicable)
             if (MAX_SLEEP > delay):
@@ -201,8 +182,13 @@ class Ping(object):
     def do(self):
         """
         Send one ICMP ECHO_REQUEST and receive the response until self.timeout
+        return delay，下次运行do前 sleep的时间(ms)
         """
         try: # One could use UDP here, but it's obscure
+            # 关于UDP/TCP root权限问题的选择, 感觉是使用了UDP后就不是完完全全模仿的ping命令了 
+            # http://stackoverflow.com/questions/1189389/python-non-privileged-icmp
+            # UDP 方式:
+            # socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_ICMP)
             current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
         except socket.error, (errno, msg):
             if errno == 1:
@@ -216,7 +202,7 @@ class Ping(object):
 
         send_time = self.send_one_ping(current_socket)
         if send_time == None:
-            return
+            return 0
         self.send_count += 1
 
         receive_time, packet_size, ip, ip_header, icmp_header = self.receive_one_ping(current_socket)
@@ -240,7 +226,20 @@ class Ping(object):
         """
         Send one ICMP ECHO_REQUEST
         """
+        # http://stackoverflow.com/questions/19920535/malformed-packet-on-icmp-python
         # Header is type (8), code (8), checksum (16), id (16), sequence (16)
+        #  0                   1                   2                   3
+        #  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+        # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        # |     Type      |     Code      |          Checksum             | 
+        # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        # |           Identifier          |        Sequence Number        |
+        # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        # |     Data ...
+        # +-+-+-+-+-
+        # 
+        # http://www.cnblogs.com/gala/archive/2011/09/22/2184801.html
+        # BBHHHH
         checksum = 0
 
         # Make a dummy header with a 0 checksum.
@@ -248,11 +247,16 @@ class Ping(object):
             "!BBHHH", ICMP_ECHO, 0, checksum, self.own_id, self.seq_number
         )
 
-        padBytes = []
-        startVal = 0x42
-        for i in range(startVal, startVal + (self.packet_size)):
-            padBytes += [(i & 0xff)]  # Keep chars in the 0-255 range
-        data = bytes(padBytes)
+        #padBytes = []
+        #startVal = 0x42
+        #for i in range(startVal, startVal + (self.packet_size)):
+        #    padBytes += [(i & 0xff)]  # Keep chars in the 0-255 range
+        #data = bytes(padBytes)
+
+        # icmp Data部分
+        data = chr(65)
+        for i in range(66, 66 + (self.packet_size)):
+            data = data + chr((i & 0xff))
 
         # Calculate the checksum on the data and the dummy header.
         checksum = calculate_checksum(header + data) # Checksum is in network order
@@ -292,35 +296,53 @@ class Ping(object):
             receive_time = default_timer()
 
             packet_data, address = current_socket.recvfrom(ICMP_MAX_RECV)
+            print address
 
+            # 20 -28 位是ICMP
             icmp_header = HeaderInformation(
-                names=[
+                names = [
                     "type", "code", "checksum",
                     "packet_id", "seq_number"
                 ],
-                struct_format="!BBHHH",
-                data=packet_data[20:28]
+                struct_format = "!BBHHH",
+                data = packet_data[20:28]
             )
 
             if icmp_header["packet_id"] == self.own_id: # Our packet
+                # 前20 位是IPv4
+                #  0                   1                   2                   3
+                #  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                # |     Version   |     Type      |          Length               | 
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                # |         Identification        |Flags|   Fragment Offset       |
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                # |   TimeToLive  |   Protocol    |          Checksum             | 
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                # |                   Source IP Address                           |
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                # |                 Destination IP Address                        |
+                # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                #
                 ip_header = HeaderInformation(
-                    names=[
+                    names = [
                         "version", "type", "length",
-                        "id", "flags", "ttl", "protocol",
-                        "checksum", "src_ip", "dest_ip"
+                        "id", "flags", 
+                        "ttl", "protocol","checksum", 
+                        "src_ip",
+                        "dest_ip"
                     ],
-                    struct_format="!BBHHHBBHII",
-                    data=packet_data[:20]
+                    struct_format = "!BBHHHBBHII",
+                    data = packet_data[:20]
                 )
                 packet_size = len(packet_data) - 28
                 ip = socket.inet_ntoa(struct.pack("!I", ip_header["src_ip"]))
-                # XXX: Why not ip = address[0] ???
+                # XXX: Why not ip = address[0] / ip,port = address
                 return receive_time, packet_size, ip, ip_header, icmp_header
-
+            # 超时的 icmp返回, 但是正常应该都走select timeout了
             timeout = timeout - select_duration
             if timeout <= 0:
                 return None, 0, 0, 0, 0
-
 
 def verbose_ping(hostname, timeout=1000, count=3, packet_size=55):
     p = Ping(hostname, timeout, packet_size)
