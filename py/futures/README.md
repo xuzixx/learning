@@ -1,9 +1,11 @@
 文章学习
 =======
 ### packages:
->glob
->gzip
->traceback # errcode
+> glob
+>
+> gzip
+>
+> traceback # errcode
 
 
 refer:
