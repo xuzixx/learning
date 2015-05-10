@@ -26,7 +26,7 @@ plot(dates, counts)
 ylim(0, max(counts))
 title("test pylab")
 #show()
-savefig("1_pylab.png")
+savefig("png/1_pylab.png")
 
 
 
