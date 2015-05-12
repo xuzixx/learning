@@ -19,6 +19,9 @@
 > 4 single/multi 对比
 >
 > 5 job submit & job key
+>
+> 6 job使用callback # 文章中有关于thread lock的提示
+>
 
 refer:
 http://www.dalkescientific.com/writings/diary/archive/2012/01/19/concurrent.futures.html
