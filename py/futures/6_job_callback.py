@@ -29,3 +29,18 @@ Technical notes:
     I'm using a process pool, and the concurrent process pool implementation uses a single local worker thread, 
     so I don't think I have to worry about contention. You should verify that.)
 """
+
+"""
+pure edition
+"""
+import functools
+def print_mapping(ip_addr, job):
+    fqdn = job.result()
+    print ip_addr, fqdn
+
+with futures.ProcessPoolExecutor(max_workers = 2) as executor:
+    for ip_addr in ip_addresses:
+        job = executor.submit(socket.getfqdn, ip_addr)
+        job.add_done_callback(functools.partial(print_mapping, ip_addr))
+
+

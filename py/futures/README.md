@@ -8,6 +8,8 @@
 > traceback # errcode
 >
 > Counter # 多进程应用
+>
+> functools.partial
 
 ### tips:
 > 1 生成一段日期
