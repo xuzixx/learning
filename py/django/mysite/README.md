@@ -33,23 +33,12 @@
 >
 > django 环境model相关导入
 >
-> # todo ? django_admin_log 是否可以自定义
+> \# todo ? django_admin_log 是否可以自定义
 >
 > tips \[Writing your first Django app, part 2\] # todo [The Django admin site](https://docs.djangoproject.com/en/1.8/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display)
 >
 > > 重新定制admin后台页面 模板(拷贝对应模板到 settings中 TEMPLATES DIRS目录下，修改即可)
 >
-> > > python -c "
->
-> > > import sys
->
-> > > sys.path = sys.path[1:]
->
-> > > import django
->
-> > > print(django.__path__)"
->
-
-
+> > > python -c "import sys;sys.path = sys.path[1:];import django;print(django.__path__)" # 查看django安装路径
 
 
