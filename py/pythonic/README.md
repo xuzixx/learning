@@ -16,5 +16,6 @@
 >
 > [多文件打开](3_fileinput.py) glob fileinput 行号处理
 >
+> [文件编码/探测/转换](4_encoding.py) chardect codecs
 
 
