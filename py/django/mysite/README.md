@@ -1,6 +1,6 @@
 基本流程
 ---------
-### 1:django-admin startproject mysite (version 1.8.1)
+### 1:django-admin startproject mysite (version 1.8.2)
 ### 2:python manage.py migrate
 ### 3:python manage.py runserver 0.0.0.0:8000
 ### 4:python manage.py startapp polls
@@ -11,7 +11,9 @@
 ### 7:python manage.py migrate 
 \[创建polls对应表\]<br/>
 ### 8:python manage.py shell
-\[加载django环境的交互界面,manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, which gives Django the Python import path to your mysite/settings.py file.\]<br/>
+\[加载django环境的交互界面,<br/>
+manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, <br/>
+which gives Django the Python import path to your mysite/settings.py file.\]<br/>
 [[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]<br/>
 [[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]<br/>
 ### 9:python manage.py createsuperuser 
