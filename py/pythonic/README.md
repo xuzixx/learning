@@ -1,6 +1,6 @@
 ### code:
 
-> [1_ex](1_ex.py)
+> [1\_ex](1_ex.py)
 >
 > > 01 用两个元素之间有对应关系的list构造一个dict:
 >
@@ -12,7 +12,7 @@
 
 > [漂亮打印] cat file.json |python -m json.tool
 >
-> [分析脚本](2_pprint.py) python -m cProfile my_script.py
+> [分析脚本](2_pprint.py) python -m cProfile my\_script.py
 >
 > [多文件打开](3_fileinput.py) glob fileinput 行号处理
 >
