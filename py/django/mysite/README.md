@@ -8,9 +8,9 @@
 ### 6:python manage.py sqlmigrate polls 0001 \[查看建表SQL\]
 ### 7:python manage.py migrate \[创建polls对应表\]
 ### 8:python manage.py shell
-\[加载django环境的交互界面,manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, which gives Django the Python import path to your mysite/settings.py file.\]
-[[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]
-[[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]
+\[加载django环境的交互界面,manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, which gives Django the Python import path to your mysite/settings.py file.\]<br/>
+[[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]<br/>
+[[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]<br/>
 > mysite/
 > 
 > > manage.py [[detail](https://docs.djangoproject.com/en/1.8/ref/django-admin/)]
