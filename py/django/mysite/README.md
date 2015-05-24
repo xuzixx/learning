@@ -4,14 +4,18 @@
 ### 2:python manage.py migrate
 ### 3:python manage.py runserver 0.0.0.0:8000
 ### 4:python manage.py startapp polls
-### 5:python manage.py makemigrations polls \[polls/migrations 目录下生成\]
-### 6:python manage.py sqlmigrate polls 0001 \[查看建表SQL\]
-### 7:python manage.py migrate \[创建polls对应表\]
+### 5:python manage.py makemigrations polls 
+\[polls/migrations 目录下生成\] <br/>
+### 6:python manage.py sqlmigrate polls 0001 
+\[查看建表SQL\]<br/>
+### 7:python manage.py migrate 
+\[创建polls对应表\]<br/>
 ### 8:python manage.py shell
 \[加载django环境的交互界面,manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, which gives Django the Python import path to your mysite/settings.py file.\]<br/>
 [[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]<br/>
 [[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]<br/>
-### 9:python manage.py createsuperuser \[pwd 848\]
+### 9:python manage.py createsuperuser 
+\[pwd 848\]<br/>
 
 > mysite/
 > 
@@ -39,6 +43,6 @@
 >
 > > 重新定制admin后台页面 模板(拷贝对应模板到 settings中 TEMPLATES DIRS目录下，修改即可)
 >
-> > > python -c "import sys;sys.path = sys.path[1:];import django;print(django.__path__)" # 查看django安装路径
+> > > python -c "import sys;sys.path = sys.path[1:];import django;print(django.\_\_path\_\_)" # 查看django安装路径
 
 
