@@ -24,6 +24,11 @@ class Question(models.Model):
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(minutes = 5)
 
+    # 为了admin 界面后台显示 tips [Writing your first Django app, part 2]
+    was_published_recently.admin_order_field = 'pub_date'
+    was_published_recently.boolean = True
+    was_published_recently.short_description = "最近发布?"
+
 class Choice(models.Model):
     question = models.ForeignKey(Question)
     choice_text = models.CharField(max_length = 200)
