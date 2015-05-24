@@ -11,18 +11,15 @@
 \[加载django环境的交互界面,manage.py sets the DJANGO\_SETTINGS\_MODULE environment variable, which gives Django the Python import path to your mysite/settings.py file.\]<br/>
 [[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]<br/>
 [[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]<br/>
+### 9:python manage.py createsuperuser \[pwd 848\]
+
 > mysite/
 > 
 > > manage.py [[detail](https://docs.djangoproject.com/en/1.8/ref/django-admin/)]
->
 > > mysite/
->
 > > > \_\_init\_\_.py
->
 > > > settings.py [[detail](https://docs.djangoproject.com/en/1.8/topics/settings/)]
->
 > > > urls.py [[detail](https://docs.djangoproject.com/en/1.8/topics/http/urls/)]
->
 > > > wsgi.py [[How to deploy with WSGI](https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/)]
 
 ### test
@@ -31,3 +28,17 @@
 >
 > django 环境model相关导入
 >
+> # todo ? django_admin_log 是否可以自定义
+>
+> tips \[Writing your first Django app, part 2\] # todo [The Django admin site](https://docs.djangoproject.com/en/1.8/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display)
+> > 重新定制admin后台页面 模板(拷贝对应模板到 settings中 TEMPLATES DIRS目录下，修改即可)
+> > > python -c "
+> > > import sys
+> > > sys.path = sys.path[1:]
+> > > import django
+> > > print(django.__path__)"
+>
+
+
+
+
