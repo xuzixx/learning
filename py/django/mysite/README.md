@@ -3,11 +3,11 @@ django-admin startproject mysite (version 1.8.1)
 
 > mysite/
 > 
-> > manage.py [detail](https://docs.djangoproject.com/en/1.8/ref/django-admin/)
+> > manage.py [[detail](https://docs.djangoproject.com/en/1.8/ref/django-admin/)]
 >
 > > mysite/
 >
-> > > __init__.py
+> > > \_\_init\_\_.py
 >
 > > > settings.py
 >
