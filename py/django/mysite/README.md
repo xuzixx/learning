@@ -46,5 +46,9 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
 > > 重新定制admin后台页面 模板(拷贝对应模板到 settings中 TEMPLATES DIRS目录下，修改即可)
 >
 > > > python -c "import sys;sys.path = sys.path[1:];import django;print(django.\_\_path\_\_)" # 查看django安装路径
+>
+> \[url # todo 如果url(name参数内容重复会怎样?) [django.core.urlresolvers](https://docs.djangoproject.com/en/1.8/ref/urlresolvers/#module-django.core.urlresolvers)]
+>
+> \[# todo [Django shortcut functions](https://docs.djangoproject.com/en/1.8/topics/http/shortcuts/#module-django.shortcuts)\]
 
 
