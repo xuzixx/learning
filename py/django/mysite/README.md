@@ -50,5 +50,13 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
 > \[url # todo 如果url(name参数内容重复会怎样?) [django.core.urlresolvers](https://docs.djangoproject.com/en/1.8/ref/urlresolvers/#module-django.core.urlresolvers)]
 >
 > \[# todo [Django shortcut functions](https://docs.djangoproject.com/en/1.8/topics/http/shortcuts/#module-django.shortcuts)\]
+>
+> \[# todo detail of [csrf](https://docs.djangoproject.com/en/1.8/ref/csrf/)\]
+>
+> \[# todo [Request and response objects](https://docs.djangoproject.com/en/1.8/ref/request-response/)\]
+>
+> 利用generic views的例子,利用了一套新的url测试(polls\_generic)
+>
+> > \[# todo 快速list,detail模型 [Generic display views](https://docs.djangoproject.com/en/1.8/ref/class-based-views/generic-display/) [Class-based views](https://docs.djangoproject.com/en/1.8/topics/class-based-views/)\]
 
 
