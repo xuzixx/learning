@@ -113,3 +113,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# todo
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    "/var/www/static/",
+)

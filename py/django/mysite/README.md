@@ -58,5 +58,9 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
 > 利用generic views的例子,利用了一套新的url测试(polls\_generic)
 >
 > > \[# todo 快速list,detail模型 [Generic display views](https://docs.djangoproject.com/en/1.8/ref/class-based-views/generic-display/) [Class-based views](https://docs.djangoproject.com/en/1.8/topics/class-based-views/)\]
+>
+> 静态文件处理方法参考[Managing static files (CSS, images)](https://docs.djangoproject.com/en/1.8/howto/static-files/)<br/>
+[Deploying static files](https://docs.djangoproject.com/en/1.8/howto/static-files/deployment/)<br/>
+[The staticfiles app](https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/)<br/>
 
 
