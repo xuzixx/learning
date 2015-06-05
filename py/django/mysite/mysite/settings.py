@@ -38,6 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',
+    'questions',
+    # django-markdown-deux
+    'markdown_deux',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,7 +89,12 @@ DATABASES = {
         'NAME' : 'mysite',
         'USER' : 'root',
         'PASSWORD' : 'wxtest',
-        'HOST' : '127.0.0.1'
+        'HOST' : '127.0.0.1',
+        'PORT' : '3306',
+        # todo
+        'OPTIONS' : {
+            'init_command': 'SET storage_engine=INNODB'
+        }
     }
 }
 
@@ -119,3 +127,17 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     "/var/www/static/",
 )
+
+# django-markdown-deux
+from markdown_deux.conf.settings import MARKDOWN_DEUX_DEFAULT_STYLE
+MARKDOWN_DEUX_STYLES = {
+    "default": MARKDOWN_DEUX_DEFAULT_STYLE,
+    "trusted": {
+        "extras": {
+            "code-friendly": None,
+        },
+        # Allow raw HTML (WARNING: don't use this for user-generated
+        # Markdown for your site!).
+        "safe_mode": False,
+    }
+}

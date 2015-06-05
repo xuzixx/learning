@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^polls/', include('polls.urls', namespace = "polls")),
     url(r'^polls_generic/', include('polls.urls_generic', namespace = "polls_generic")),
     url(r'^admin/', include(admin.site.urls)),
+    # test add app
+    url(r'^questions/', include('questions.urls', namespace = 'questions')),
 ]
