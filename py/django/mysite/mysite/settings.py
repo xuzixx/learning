@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#-*- Encoding: utf-8 -*-
 """
 Django settings for mysite project.
 
@@ -14,7 +16,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+os.path.join(BASE_DIR, "")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -39,8 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'polls',
     'questions',
-    # django-markdown-deux
-    'markdown_deux',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -128,16 +128,3 @@ STATICFILES_DIRS = (
     "/var/www/static/",
 )
 
-# django-markdown-deux
-from markdown_deux.conf.settings import MARKDOWN_DEUX_DEFAULT_STYLE
-MARKDOWN_DEUX_STYLES = {
-    "default": MARKDOWN_DEUX_DEFAULT_STYLE,
-    "trusted": {
-        "extras": {
-            "code-friendly": None,
-        },
-        # Allow raw HTML (WARNING: don't use this for user-generated
-        # Markdown for your site!).
-        "safe_mode": False,
-    }
-}
