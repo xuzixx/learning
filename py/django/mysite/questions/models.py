@@ -23,12 +23,14 @@ class Question(models.Model):
     )
     id = models.AutoField(primary_key=True)
     type = models.CharField("题目类型", max_length = 5, choices = Q_TYPE_SIZES) # q.get_type_display()
-    content = models.CharField('题目内容', max_length = 250)
+    title = models.CharField('题目标题', max_length = 250)
+    problem = models.TextField("题目", default = "")
+    answer = models.CharField("答案", max_length = 250, default = "")
     create_time = models.DateTimeField('创建时间', auto_now_add = True)
     update_time = models.DateTimeField('更新时间', auto_now = True)
 
     def __unicode__(self):
-        return "<Question: %s>" % self.content
+        return "<Question: %s>" % self.title
 
 class Paper(models.Model):
     id = models.AutoField(primary_key = True)

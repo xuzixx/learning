@@ -33,7 +33,7 @@ Models 学习
 > > FilePathField
 
 ### 引出相关问题
-\[Meta : [Model Meta options](https://docs.djangoproject.com/en/1.8/ref/models/options/)\]<br/>
+\[Meta : [Model Meta options](https://docs.djangoproject.com/en/1.8/ref/models/options/)\] <br />
 \[直接执行SQL ：[Performing raw SQL queries](https://docs.djangoproject.com/en/1.8/topics/db/sql/)\]<br/>
 \[模型方法, 重写 : [Model instance reference](https://docs.djangoproject.com/en/1.8/ref/models/instances/)\]<br/>
 \[模型的关系, 多对多中间模型会导致一些方法失效 [Related objects reference](https://docs.djangoproject.com/en/1.8/ref/models/relations/)\]<br/>
@@ -58,14 +58,10 @@ Models 学习
 ```
 
 Overridden model methods are not called on bulk operations 
-Note that the __delete()__ method for an object is not necessarily called when [deleting objects in bulk using a QuerySet](https://docs.djangoproject.com/en/1.8/topics/db/queries/#topics-db-queries-delete). 
+Note that the **delete()** method for an object is not necessarily called when [deleting objects in bulk using a QuerySet](https://docs.djangoproject.com/en/1.8/topics/db/queries/#topics-db-queries-delete). 
 To ensure customized delete logic gets executed, 
-you can use __pre_delete__ and/or __post_delete__ signals.
-Unfortunately, there isn’t a workaround when __creating__ or __updating__ objects in bulk, since none of __save()__, __pre_save__, and __post_save__ are called.<br/>
-
-
-
-
+you can use **pre_delete** and/or **post_delete** signals.
+Unfortunately, there isn’t a workaround when **creating** or **updating** objects in bulk, since none of **save()**, **pre_save**, and **post_save** are called.<br/>
 
 
 

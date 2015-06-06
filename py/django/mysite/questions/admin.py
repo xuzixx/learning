@@ -6,8 +6,8 @@ from .models import *
 
 class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['type']
-    search_fields = ['content']
-    list_display = ['id','type','content','create_time','update_time']
+    search_fields = ['title']
+    list_display = ['id','type','title','create_time','update_time']
 
 class PaperQuestionsInline(admin.TabularInline):
     fields = ['seq_num','user_answer', 'score', 'question']
