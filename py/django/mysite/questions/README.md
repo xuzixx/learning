@@ -16,7 +16,8 @@ Models 学习
     q.papers.clear()
 
 ### 调试
-`打印出SQL`
+打印出SQL
+    
     queryset = Paper.objects.filter(questions__type = 'SC',question_relations__seq_num = 1)
     print queryset.query
     SELECT `questions_paper`.`id`, `questions_paper`.`title`, 
