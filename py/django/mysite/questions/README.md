@@ -16,7 +16,7 @@ Models 学习
     q.papers.clear()
 
 ### 调试
-    打印出SQL
+`打印出SQL`
     queryset = Paper.objects.filter(questions__type = 'SC',question_relations__seq_num = 1)
     print queryset.query
     SELECT `questions_paper`.`id`, `questions_paper`.`title`, 
@@ -30,7 +30,6 @@ Models 学习
 > 字段属性
 > > GenericIPAddressField
 >
-> > FilePathField
 
 ### 引出相关问题
 \[Meta : [Model Meta options](https://docs.djangoproject.com/en/1.8/ref/models/options/)\] <br />
@@ -63,5 +62,12 @@ To ensure customized delete logic gets executed,
 you can use **pre_delete** and/or **post_delete** signals.
 Unfortunately, there isn’t a workaround when **creating** or **updating** objects in bulk, since none of **save()**, **pre_save**, and **post_save** are called.<br/>
 
+#### tips
+* ImageField 在admin界面中，删除不会删除文件系统中的文件，只是删除了数据库中path
 
+    a = QuestionPic.objects.get(pk = 3)
+    a.pic.delete()
+    # 会删除文件，并且update数据库字段，将ImageField那个字段置空
+    a.pic.delete(save = False)
+    # 会删除文件，并且update数据库字段，但ImageField那个字段没做操作
 
