@@ -65,11 +65,11 @@ Unfortunately, there isn’t a workaround when **creating** or **updating** obje
 
 #### tips
 * ImageField 在admin界面中，删除不会删除文件系统中的文件，只是删除了数据库中path
-    
+```    
     a = QuestionPic.objects.get(pk = 3)
     a.pic.delete()
     #会删除文件，并且update数据库字段，将ImageField那个字段置空
     a.pic.delete(save = False)
     #会删除文件，并且update数据库字段，但ImageField那个字段没做操作
-
+```
 
