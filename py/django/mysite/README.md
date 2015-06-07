@@ -62,5 +62,25 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
 > 静态文件处理方法参考[Managing static files (CSS, images)](https://docs.djangoproject.com/en/1.8/howto/static-files/)<br/>
 [Deploying static files](https://docs.djangoproject.com/en/1.8/howto/static-files/deployment/)<br/>
 [The staticfiles app](https://docs.djangoproject.com/en/1.8/ref/contrib/staticfiles/)<br/>
+> \[[文件处理：Managing files](https://docs.djangoproject.com/en/1.8/topics/files/)]\]
+
+#### MEDIA\_ROOT 相关设置想法
+    
+    之前想每一个APP，使用自己的一套上传文件文件夹（放在自己APP目录里面的media里面通过inspect获得了APP的绝对路径）
+    主settings.py里面
+    1、MEDIA_URL = '/media/'
+    2、APP对应路径下，model中指定了FileSystemStorage
+    3、在自己的APP里面的url里面添加了
+    urlpatterns += static(settings.MEDIA_URL, document_root = APP_UPLOAD_DIR)
+    # 这样的问题就是图片的访问路径会有问题
+    # self.pic.url = '/media/QuestionPic/2015/06/06/113.pic.jpg'
+    # 但是 实际图片可以访问的地址是：
+    # http://127.0.0.1:8000/questions/media/QuestionPic/2015/06/06/113.pic_un70WY7.jpg
+    # 就算我把 3、放入到整体的settings中，document_root 也不能做到指定到多个地方
+
+改变了思想，将所有的app都指向同一个MEDIA\_ROOT,在**upload\_to**中多添加app的名字
+
+
+
 
 
