@@ -1,0 +1,15 @@
+{% extends 'questions/base.html' %}
+{% load staticfiles %}
+{% block css_js %}
+    <link rel="stylesheet" type="text/css" href="{% static 'questions/css/style.css' %}" />
+{% endblock %}
+{% block title %} TEST title {% endblock %}
+{% block content %}
+    <!-- 信任html输出 -->
+    {% autoescape off %}
+        {{ question_content }}
+    {% endautoescape %}
+    <h3>答案 ：{{ pqr.question.answer }}</h3>
+{% endblock %}
+
+

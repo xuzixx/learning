@@ -20,8 +20,8 @@ class PaperQuestionsInline(admin.TabularInline):
     extra = 0
 
 class PaperAdmin(admin.ModelAdmin):
-    list_display = ["user", 'title', 'create_time', 'update_time']
-    fields = ['user', 'title']
+    list_display = ["user", 'title', 'status', 'create_time', 'update_time']
+    fields = ['user', 'title', 'status']
     inlines = [PaperQuestionsInline]
 
 class PaperUserAdmin(admin.ModelAdmin):

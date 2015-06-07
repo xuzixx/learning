@@ -11,11 +11,17 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
 
-
-# Create your views here.
+def paper_new(request):
+    """ 用户新创建一个paper """
+    pass
 
 def paper_index(request):
-    paper_list = Paper.objects.order_by("-update_time")
+    """ 
+        根据用户, 显示所有的paper 
+        url : ^paper/$
+    """
+    # todo 权限
+    paper_list = Paper.objects.filter(user__id = 1).order_by("-update_time")
     paginator = Paginator(paper_list,10)
 
     page = request.GET.get('page', 1)
@@ -27,16 +33,47 @@ def paper_index(request):
         papers = paginator.page(paginator.num_pages)
     return render_to_response('questions/paper_index.html', {'papers': papers})
 
-
-def paper_new(request):
-    pass
-
 def paper_detail(request, paper_id):
+    """ 
+        根据paper号 显示所有的questions 
+        url : ^paper/(?P<paper_id>[0-9]+)/$
+    """
+    #question_list = Question.objects.filter(paper_relations__id = paper_id)
+    pqr_list = PaperQuestionRelation.objects.filter(paper__id = paper_id)
+    # !!! pqrs 不是 questions
+    return render_to_response('questions/question_list.html', {'pqrs': pqr_list})
+
+def paper_result(request, paper_id):
     return HttpResponse(paper_id)
 
-def paper_results(request, paper_id):
-    return HttpResponse(paper_id)
+def user_submit(request, pqr_id):
+    user_answer = request.POST.get('user_answer', "")
+    pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
+    
+def question_detail(request, pqr_id):
+    """ 
+        显示具体question内容 
+        url : ^question/(?P<pqr_id>[0-9]+)/$
+    """
+    import markdown2
+    pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
+    return render_to_response('questions/question_detail.html', 
+            {'pqr': pqr, "question_content": markdown2.markdown(pqr.question.problem)}
+        )
 
+def question_result(request, pqr_id):
+    """ 
+        显示具体question答案 
+        url : ^question/(?P<pqr_id>[0-9]+)/result/$
+    """
+    import markdown2
+    pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
+    return render_to_response('questions/question_result.html', 
+            {'pqr': pqr, "question_content": markdown2.markdown(pqr.question.problem)}
+        )
+
+
+# -------------------------------- 
 def test_markdown(request):
     import markdown2
     q = Question.objects.get(pk = 1)

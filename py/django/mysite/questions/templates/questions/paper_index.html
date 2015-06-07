@@ -1,21 +1,15 @@
+{% extends 'questions/base.html' %}
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'polls/css/style.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}" />
-<!--
-    % load staticfiles % loads the % static % template tag from the staticfiles template library. 
-    The % static % template tag generates the absolute URL of the static file. 
--->
-
+{% block content %}
 {% if papers %}
+    <h1>所有试卷</h1>
     <ul>
         {% for paper in papers %}
-        <li>
-        <!-- polls:detail polls是命名空间，detail 是注册的url name-->
-        <a href="{% url 'questions:paper_results' paper.id %}">{{ paper.title }}</a>
-        </li>
+        <li><a href="{% url 'questions:paper_detail' paper.id %}">{{ paper.title }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
     <p>No paper are available.</p>
 {% endif %}
+{% endblock %}

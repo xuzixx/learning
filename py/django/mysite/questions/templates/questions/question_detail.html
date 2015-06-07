@@ -7,7 +7,7 @@
 {% block content %}
     <!-- 信任html输出 -->
     {% autoescape off %}
-        {{ my_content }}
+        {{ question_content }}
 
         <form action = "{% url 'questions:user_submit' 1 %}" method = "post">
             <div><input name="user_answer" type="checkbox" value="A" />A</div>
