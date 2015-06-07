@@ -1,7 +1,6 @@
 #!/usr/bin/python
 #-*- Encoding: utf-8 -*-
 from django.conf.urls import url
-
 from . import views
 
 urlpatterns = [
@@ -15,4 +14,7 @@ urlpatterns = [
     url(r'^paper/(?P<paper_id>[0-9]+)/results/$', views.paper_results, name = 'paper_results'),
     # test url
     url(r'^test/$', views.test, name = 'question_test'),
+    url(r'^test_markdown/$', views.test_markdown, name = 'question_test_markdown'),
 ]
+
+

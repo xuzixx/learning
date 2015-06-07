@@ -4,10 +4,15 @@ from django.contrib import admin
 
 from .models import *
 
+class QuestionPicInline(admin.StackedInline):
+    model = QuestionPic
+    extra = 0
+
 class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['type']
     search_fields = ['title']
     list_display = ['id','type','title','create_time','update_time']
+    inlines = [QuestionPicInline]
 
 class PaperQuestionsInline(admin.TabularInline):
     fields = ['seq_num','user_answer', 'score', 'question']
@@ -19,7 +24,7 @@ class PaperAdmin(admin.ModelAdmin):
     fields = ['user', 'title']
     inlines = [PaperQuestionsInline]
 
-class QuestionUserAdmin(admin.ModelAdmin):
+class PaperUserAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'create_time', 'update_time']
     fields = ['name', 'email']
 #    fieldsets = [
@@ -32,4 +37,4 @@ class QuestionUserAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Paper, PaperAdmin)
-admin.site.register(QuestionUser, QuestionUserAdmin)
+admin.site.register(PaperUser, PaperUserAdmin)

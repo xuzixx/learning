@@ -37,10 +37,15 @@ def paper_detail(request, paper_id):
 def paper_results(request, paper_id):
     return HttpResponse(paper_id)
 
-def test(request):
+def test_markdown(request):
     import markdown2
-    return render_to_response('questions/README.md', 
-            {"my_content": markdown2.markdown("**123**<br/>456")}
+    q = Question.objects.get(pk = 1)
+    print q.problem
+    return render_to_response('questions/markdown_test.html', 
+            {"my_content": markdown2.markdown(q.problem)}
         )
+
+def test(request):
+    return HttpResponse("hello")
 
 
