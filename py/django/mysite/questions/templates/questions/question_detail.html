@@ -8,15 +8,26 @@
     <!-- 信任html输出 -->
     {% autoescape off %}
         {{ question_content }}
-
-        <form action = "{% url 'questions:user_submit' 1 %}" method = "post">
-            <div><input name="user_answer" type="checkbox" value="A" />A</div>
-            <div><input name="user_answer" type="checkbox" value="B" />B</div>
-            <div><input name="user_answer" type="checkbox" value="C" />C</div>
-            <div><input name="user_answer" type="checkbox" value="D" />D</div>
-            <div><input type="submit" value="Submit" /></div>
-        </form>
     {% endautoescape %}
+    <div class="row">
+        <div class="col-md-4"></div>
+            <div class="col-md-4">
+            <form action="{% url 'questions:question_detail' pqr.id %}" method="post">
+                {% csrf_token %}
+                    
+                    {% for field in form %}
+                        {% for radio in field %}
+                            <div>{{ radio }}</div><br/>
+                        {% endfor %}
+                    {% endfor %}
+                    {% comment %}
+                    {{ form.as_table }}
+                    {% endcomment %}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
 {% endblock %}
 
 

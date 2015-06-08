@@ -8,11 +8,16 @@ class QuestionPicInline(admin.StackedInline):
     model = QuestionPic
     extra = 0
 
+class QuestionAnswerInline(admin.TabularInline):
+    fields = ["key", "content"]
+    model = QuestionAnswer
+    extra = 0
+    
 class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['type']
     search_fields = ['title']
     list_display = ['id','type','title','create_time','update_time']
-    inlines = [QuestionPicInline]
+    inlines = [QuestionAnswerInline, QuestionPicInline]
 
 class PaperQuestionsInline(admin.TabularInline):
     fields = ['seq_num','user_answer', 'score', 'question']

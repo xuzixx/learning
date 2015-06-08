@@ -9,6 +9,9 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_protect
+
 from .models import *
 
 def paper_new(request):
@@ -39,7 +42,7 @@ def paper_detail(request, paper_id):
         url : ^paper/(?P<paper_id>[0-9]+)/$
     """
     #question_list = Question.objects.filter(paper_relations__id = paper_id)
-    pqr_list = PaperQuestionRelation.objects.filter(paper__id = paper_id)
+    pqr_list = PaperQuestionRelation.objects.filter(paper__id = paper_id).order_by("seq_num")
     # !!! pqrs 不是 questions
     return render_to_response('questions/question_list.html', {'pqrs': pqr_list})
 
@@ -47,20 +50,43 @@ def paper_result(request, paper_id):
     return HttpResponse(paper_id)
 
 def user_submit(request, pqr_id):
-    user_answer = request.POST.get('user_answer', "")
-    pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
+    #user_answer = request.POST.get('user_answer', "")
+    #pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
     
+    return render_to_response("questions/markdown_test.html", {})
+   
+@csrf_protect   
 def question_detail(request, pqr_id):
     """ 
         显示具体question内容 
         url : ^question/(?P<pqr_id>[0-9]+)/$
     """
-    import markdown2
     pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
-    return render_to_response('questions/question_detail.html', 
-            {'pqr': pqr, "question_content": markdown2.markdown(pqr.question.problem)}
-        )
-
+    if request.method == 'POST':
+        form = pqr.question.get_anserform(request.POST)
+        print "=" * 50
+        if form.is_valid():
+#            print form.cleaned_data
+            answer = [qa.key for qa in form.cleaned_data['answer']]
+#            print answer
+#        print "-" * 25
+#        print request.POST
+#        print "-" * 25
+#        print form
+#        print "=" * 50
+        return HttpResponse(pqr.question.check_answer(answer))
+    else:
+        form = pqr.question.get_anserform()
+        
+    import markdown2
+    return render(request, 'questions/question_detail.html', 
+        {
+            'pqr': pqr, 
+            'form': form,
+            "question_content": markdown2.markdown(pqr.question.problem)
+        }
+    )
+    
 def question_result(request, pqr_id):
     """ 
         显示具体question答案 
@@ -74,6 +100,17 @@ def question_result(request, pqr_id):
 
 
 # -------------------------------- 
+def test_question_detail(request, pqr_id):
+    """ 
+       question_detail 测试，不同方式实现 CSRF # tips
+    """
+    import markdown2
+    pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
+    return render_to_response('questions/question_detail.html', 
+            {'pqr': pqr, "question_content": markdown2.markdown(pqr.question.problem)},
+            context_instance=RequestContext(request)
+        )
+        
 def test_markdown(request):
     import markdown2
     q = Question.objects.get(pk = 1)

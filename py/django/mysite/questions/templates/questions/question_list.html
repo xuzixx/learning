@@ -6,7 +6,7 @@
     <h1>题目:</h1>
     <ul>
         {% for pqr in pqrs %}
-        <li><a href="{% url 'questions:question_detail' pqr.id %}">{{ pqr.question.title }}</a></li>
+        <li>{{ pqr.seq_num }}:<a href="{% url 'questions:question_detail' pqr.id %}">{{ pqr.question.title }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
