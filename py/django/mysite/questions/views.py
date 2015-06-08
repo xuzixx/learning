@@ -66,8 +66,8 @@ def question_detail(request, pqr_id):
         form = pqr.question.get_anserform(request.POST)
         print "=" * 50
         if form.is_valid():
+            answer = form.cleaned_data['answer']
 #            print form.cleaned_data
-            answer = [qa.key for qa in form.cleaned_data['answer']]
 #            print answer
 #        print "-" * 25
 #        print request.POST

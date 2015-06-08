@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #-*- Encoding: utf-8 -*-
+from collections import Iterable
 
 from django.db import models
 from django import forms
@@ -29,10 +30,19 @@ class Question(BaseModel):
         else:
             return None
     
-    def check_answer(self, answer):
+    def check_answer(self, user_answers):
+        """ 
+            核对答案是否正确
+            user_answers : QuestionAnswer /[QuestionAnswer]
+            return : T/F
+        """
         if self.type == "SA":
             return True
         else:
+            if isinstance(user_answers, Iterable):
+                answer = [qa.key for qa in user_answers]
+            else:
+                answer = user_answers.key
             if set(answer) == set(self.answer):
                 return True
             else:
@@ -43,7 +53,7 @@ class Question(BaseModel):
 
 class QuestionAnswer(BaseModel):
     question = models.ForeignKey(Question, related_name = 'answer_list')
-    key = models.CharField('答案选项', max_length = 1)
+    key = models.CharField('答案选项', max_length = 1, help_text = "选项序号,如'A','B','C'")
     content = models.CharField('候选答案内容', max_length = 250)
     
     def __unicode__(self):
@@ -51,7 +61,8 @@ class QuestionAnswer(BaseModel):
 
 
 class SCAnswerForm(forms.Form):
-    answer = forms.ModelChoiceField(label='答案', 
+    answer = forms.ModelChoiceField(
+        label='答案', 
         queryset=None, 
         empty_label=None, 
         to_field_name="key", 
@@ -65,7 +76,12 @@ class SCAnswerForm(forms.Form):
         self.fields['answer'].queryset = answer_list
     
 class MCAnswerForm(forms.Form):
-    answer = forms.ModelMultipleChoiceField(label='答案', queryset=None, to_field_name="key", widget=forms.CheckboxSelectMultiple)  
+    answer = forms.ModelMultipleChoiceField(
+        label='答案', 
+        queryset=None, 
+        to_field_name="key", 
+        widget=forms.CheckboxSelectMultiple
+    )
     
     def __init__(self, *args, **kwargs):
         answer_list = kwargs["answer_list"]
@@ -75,3 +91,4 @@ class MCAnswerForm(forms.Form):
     
 class SAAnswerForm(forms.Form):
     answer = forms.CharField(label='答案', max_length = 500, widget=forms.Textarea)
+
