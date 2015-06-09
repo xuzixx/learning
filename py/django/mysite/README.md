@@ -17,7 +17,7 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
 [[Once you’re in the shell, explore the database API:](https://docs.djangoproject.com/en/1.8/topics/db/queries/)]<br/>
 [[Accessing related objects](https://docs.djangoproject.com/en/1.8/ref/models/relations/)]<br/>
 ### 9:python manage.py createsuperuser 
-\[pwd 848\]<br/>
+\[pwd : wx/wx\]<br/>
 
 > mysite/
 > 
