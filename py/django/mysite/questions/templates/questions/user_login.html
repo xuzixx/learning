@@ -1,0 +1,11 @@
+{% extends 'questions/base.html' %}
+{% load staticfiles %}
+{% block title %} TEST 登录 {% endblock %}
+{% block content %}
+    <form action = "{% url 'questions:user_login' %}" method = "post">
+        {% csrf_token %}
+        <input class = '' name = 'email' type="email" class="form-control" id="u_email" placeholder="some@sohu-inc.com"></input>
+        <input class = '' name = 'password' type="password"></input>
+        <button type="submit" class="btn btn-default">Login</button>
+    </form>
+{% endblock %}

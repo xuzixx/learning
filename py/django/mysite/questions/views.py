@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*- Encoding: utf-8 -*-
 import random
+import datetime
 
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,6 +15,41 @@ from django.views.decorators.csrf import csrf_protect
 
 from .models import *
 
+@csrf_protect
+def user_login(request):
+    """
+        POST : 登录操作
+        GET : 返回登录界面
+    """
+    if request.method == 'POST':
+        # todo LDAP check user
+        # XXX(login_email, pwd)
+        login_email = 'wxyahoo@gmail.com'
+        if True:
+            u_queryset = PaperUser.objects.filter(email = login_email)
+            if u_queryset:
+                # 已经登录过
+                user = u_queryset[0]
+            else:
+                # 创建新用户
+                user = PaperUser(name = name, email = login_email)
+                user.save()
+            # question user id
+            request.session['q_u_id'] = user.id
+            return redirect('questions:paper_index')
+        else:
+            return render(request, 'questions/user_login.html', {'error_msg': "帐号/密码错误"})
+    else:
+        return render(request, 'questions/user_login.html', {'error_msg': "请登录"})
+
+def user_logout(request):
+    """ 注销登录 """
+    try:
+        del request.session['q_u_id']
+    except KeyError:
+        pass
+    return redirect('questions:user_login')
+
 def get_random_queryset(queryset, count):
     """ 返回查询结果中 随机的几个 """
     result = []
@@ -24,11 +60,18 @@ def get_random_queryset(queryset, count):
     return result
     
 def paper_new(request):
-    """ 用户新创建一个paper """
+    """ 
+        用户新创建一个paper 
+        根据选择的模板， 随机/完全 两种模式创建 paper
+    """
     ptmpl_id = request.GET.get('ptmpl', 1)
     ptmpl = PaperTemplate.objects.get(pk = ptmpl_id)
-    u = PaperUser.objects.get(pk = 1)
-    p = Paper(user = u, title = ptmpl.title, status = "DOING", template = ptmpl)
+    q_u_id = request.session['q_u_id']
+    u = PaperUser.objects.get(pk = q_u_id)
+    p = Paper(
+        title = "%s_%s" % (ptmpl.title, datetime.datetime.now().strftime('%H:%M')), 
+        status = "DOING", template = ptmpl, user = u
+    )
     p.save()
     q_list = []
     if ptmpl.type == 'ALL':
@@ -56,7 +99,8 @@ def paper_index(request):
     """
     paper_templates = PaperTemplate.objects.all()
     # todo 权限
-    paper_list = Paper.objects.filter(user__id = 1).order_by("-update_time")
+    q_u_id = request.session['q_u_id'] 
+    paper_list = Paper.objects.filter(user__id = q_u_id).order_by("-update_time")
     paginator = Paginator(paper_list,10)
     
     page = request.GET.get('page', 1)
@@ -98,15 +142,9 @@ def paper_detail(request, paper_id):
             {'pqrs': pqr_list, 'paper_id': paper_id}
         )
     
-def paper_result(request, paper_id):
-    return HttpResponse(paper_id)
+#def paper_result(request, paper_id):
+#    return HttpResponse(paper_id)
 
-def user_submit(request, pqr_id):
-    #user_answer = request.POST.get('user_answer', "")
-    #pqr = PaperQuestionRelation.objects.get(pk = pqr_id)
-    
-    return render_to_response("questions/markdown_test.html", {})
-   
 @csrf_protect   
 def question_detail(request, pqr_id):
     """ 
