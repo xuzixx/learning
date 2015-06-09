@@ -4,7 +4,7 @@ Models 学习
 ### 一些查询(对应model.py内容)
     p = Paper.objects.get(pk = 1)
     q = Question.objects.get(pk =1)
-    r = PaperQuestionRelation(paper = p, questions = q ,user_answer = "A",score = 10)
+    r = PaperQuestionRelation(paper = p, question = q ,user_answer = "A",score = 10)
     r.save()
     p.questions.all() # 
     q.papers.all() #q.paper_set.all() # 默认 若果没有# tips 1
