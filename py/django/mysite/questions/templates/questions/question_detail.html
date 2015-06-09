@@ -1,20 +1,43 @@
 {% extends 'questions/base.html' %}
 {% load staticfiles %}
 {% block css_js %}
-    <link rel="stylesheet" type="text/css" href="{% static 'questions/css/style.css' %}" />
+    
+    <script>
+        var user_answer = "{{ pqr.user_answer }}";
+        $(document).ready(function () {
+            // 简答题
+            $('#id_answer').val(user_answer);
+            // 多选题
+            $("input[type='checkbox']").each(
+                function(){
+                    if(user_answer.indexOf(this.value) >= 0){
+                        $(this).attr("checked",true);
+                    }
+                }
+            );
+            // 单选题
+            $("input[type='radio']").each(
+                function(){
+                    if(user_answer.indexOf(this.value) >= 0){
+                        $(this).attr("checked",true);
+                    }
+                }
+            );
+        });
+    </script>
 {% endblock %}
 {% block title %} TEST title {% endblock %}
 {% block content %}
     <!-- 信任html输出 -->
+    <h1>{{ pqr.seq_num }} : </h1>
     {% autoescape off %}
         {{ question_content }}
     {% endautoescape %}
     <div class="row">
         <div class="col-md-4"></div>
-            <div class="col-md-4">
+        <div class="col-md-4">
             <form action="{% url 'questions:question_detail' pqr.id %}" method="post">
                 {% csrf_token %}
-                    
                     {% for field in form %}
                         {% for radio in field %}
                             <div>{{ radio }}</div><br/>
@@ -23,8 +46,26 @@
                     {% comment %}
                     {{ form.as_table }}
                     {% endcomment %}
-                <input type="submit" value="Submit" />
+                <button type="submit" class="btn btn-default">Submit</button>
             </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <ul class="pagination">
+                {% if prev_pqr %}
+                    <li><a href="{% url 'questions:question_detail' prev_pqr.id %}">&laquo;</a></li>
+                    <li><a href="{% url 'questions:question_detail' prev_pqr.id %}">{{ prev_pqr.seq_num }}</a></li>
+                {% endif %}
+                <li><a href="{% url 'questions:question_detail' pqr.id %}">{{ pqr.seq_num }}</a></li>
+                {% if next_pqr %}
+                    <li><a href="{% url 'questions:question_detail' next_pqr.id %}">{{ next_pqr.seq_num }}</a></li>
+                    <li><a href="{% url 'questions:question_detail' next_pqr.id %}">&raquo;</a></li>
+                {% endif %}
+                
+            </ul>
         </div>
         <div class="col-md-4"></div>
     </div>

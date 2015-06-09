@@ -8,24 +8,25 @@ from django import forms
 from BaseModel import *
 
 Q_TYPE_SIZES = (
-    ("SC" , "单选题"),
-    ("MC" , "多选题"),
-    ("SA" , "简答题"),
+    ("01SC" , u"单选题"),
+    ("02MC" , u"多选题"),
+    ("03SA" , u"简答题"),
 )
 
 class Question(BaseModel):
-    type = models.CharField("题目类型", max_length = 5, choices = Q_TYPE_SIZES) # q.get_type_display()
-    title = models.CharField('题目标题', max_length = 250)
-    problem = models.TextField("题目", default = "")
-    answer = models.CharField("正确答案", max_length = 250, blank = True, default = "")
+    type = models.CharField(u"题目类型", max_length = 5, choices = Q_TYPE_SIZES) # q.get_type_display()
+    title = models.CharField(u'题目标题', max_length = 250)
+    problem = models.TextField(u"题目", default = "")
+    answer = models.CharField(u"正确答案", max_length = 250, blank = True, default = "")
+    score = models.IntegerField(u"此题答对得分", default = 10)
     
-    def get_anserform(self, *data):
+    def get_answerform(self, *data):
         queryset = self.answer_list.all()
-        if self.type == "SC":
+        if self.type == "01SC":
             return SCAnswerForm(*data, answer_list = queryset)
-        elif self.type == "MC":
+        elif self.type == "02MC":
             return MCAnswerForm(*data, answer_list = queryset)
-        elif self.type == "SA":
+        elif self.type == "03SA":
             return SAAnswerForm(*data)
         else:
             return None
@@ -33,23 +34,23 @@ class Question(BaseModel):
     def check_answer(self, user_answers):
         """ 
             核对答案是否正确
-            user_answers : QuestionAnswer /[QuestionAnswer]
-            return : T/F
+            user_answers : 单选题： QuestionAnswer /多选题：[QuestionAnswer]/简答题：str
+            return : (score, answer) score: 得分，answer: 答案字符串
         """
-        if self.type == "SA":
-            return True
+        if self.type == "03SA":
+            return (0, user_answers)
         else:
             if isinstance(user_answers, Iterable):
-                answer = [qa.key for qa in user_answers]
+                answer = "".join([qa.key for qa in user_answers])
             else:
                 answer = user_answers.key
             if set(answer) == set(self.answer):
-                return True
+                return (self.score, answer)
             else:
-                return False
+                return (0, answer)
     
     def __unicode__(self):
-        return "<Question: %s>" % self.title
+        return "<Question: %s, %s>" % (self.title, self.get_type_display())
 
 class QuestionAnswer(BaseModel):
     question = models.ForeignKey(Question, related_name = 'answer_list')

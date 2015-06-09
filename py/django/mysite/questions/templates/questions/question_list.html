@@ -1,14 +1,83 @@
 {% extends 'questions/base.html' %}
 {% load staticfiles %}
-
+{% block css_js %}
+    <script>
+        $(document).ready(function () {
+            $(".js_change_color").each(
+                function(){
+                    tmp = this.innerHTML.split('/');
+                    if(tmp[0] == tmp[1]){
+                        $(this).addClass("green");
+                    }else{
+                        $(this).addClass("red");
+                    }
+                }
+            );
+        });
+    </script>
+{% endblock %}
 {% block content %}
 {% if pqrs %}
-    <h1>题目:</h1>
-    <ul>
-        {% for pqr in pqrs %}
-        <li>{{ pqr.seq_num }}:<a href="{% url 'questions:question_detail' pqr.id %}">{{ pqr.question.title }}</a></li>
-        {% endfor %}
-    </ul>
+    {% ifequal pqrs.first.paper.status 'DOING' %}
+    <!-- 正在答题显示页面 -->
+    <div class = 'row'>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1>题目:</h1>
+            <table class = 'table'>
+                <tr><th>序号</th><th>题目</th><th>状态</th></tr>
+                {% for pqr in pqrs %}
+                <tr>
+                    <td>{{ pqr.seq_num }}:</td>
+                    <td><a href="{% url 'questions:question_detail' pqr.id %}">{{ pqr.question.title }}</a></td>
+                    {% ifequal pqr.score -1 %}
+                        <td>未答</td>
+                    {% else %}
+                        <td>已答题</td>
+                    {% endifequal %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class = 'row'>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="{% url 'questions:paper_detail' paper_id %}" method="post" >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-default">交卷</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {% else %}
+    <!-- 答题完毕显示页面 -->
+    <div class = 'row'>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1>题目:</h1>
+            <table class = 'table'>
+                <tr><th>序号</th><th>题目</th><th>分数</th></tr>
+                {% for pqr in pqrs %}
+                <tr>
+                    <td>{{ pqr.seq_num }}:</td>
+                    <td><a href="{% url 'questions:question_result' pqr.id %}">{{ pqr.question.title }}</a></td>
+                    <td class = "js_change_color">{{ pqr.score }}/{{ pqr.question.score }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class = 'row'>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a href="{% url 'questions:question_result' pqrs.first.id %}" class="btn btn-default">查看答案</a>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    {% endifequal %}
 {% else %}
     <p>No questions are available.</p>
 {% endif %}

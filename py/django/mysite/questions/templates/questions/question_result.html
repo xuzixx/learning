@@ -2,14 +2,79 @@
 {% load staticfiles %}
 {% block css_js %}
     <link rel="stylesheet" type="text/css" href="{% static 'questions/css/style.css' %}" />
+    <script>
+        var user_answer = "{{ pqr.user_answer }}";
+        $(document).ready(function () {
+            // 简答题
+            $('#id_answer').val(user_answer);
+            // 多选题
+            $("input[type='checkbox']").each(
+                function(){
+                    if(user_answer.indexOf(this.value) >= 0){
+                        $(this).attr("checked",true);
+                    }
+                }
+            );
+            // 单选题
+            $("input[type='radio']").each(
+                function(){
+                    if(user_answer.indexOf(this.value) >= 0){
+                        $(this).attr("checked",true);
+                    }
+                }
+            );
+        });
+    </script>
 {% endblock %}
-{% block title %} TEST title {% endblock %}
+{% block title %} TEST 答案 {% endblock %}
 {% block content %}
     <!-- 信任html输出 -->
+    <h1>{{ pqr.seq_num }} : </h1>
     {% autoescape off %}
         {{ question_content }}
     {% endautoescape %}
-    <h3>答案 ：{{ pqr.question.answer }}</h3>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h3 class = 'green'>正确答案 : {{ pqr.question.answer }}</h3>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h3>您的答案:</h3>
+            <form action="#" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% for radio in field %}
+                        <div>{{ radio }}</div><br/>
+                    {% endfor %}
+                {% endfor %}
+                {% comment %}
+                {{ form.as_table }}
+                {% endcomment %}
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <ul class="pagination">
+                {% if prev_pqr %}
+                    <li><a href="{% url 'questions:question_result' prev_pqr.id %}">&laquo;</a></li>
+                    <li><a href="{% url 'questions:question_result' prev_pqr.id %}">{{ prev_pqr.seq_num }}</a></li>
+                {% endif %}
+                <li><a href="{% url 'questions:question_result' pqr.id %}">{{ pqr.seq_num }}</a></li>
+                {% if next_pqr %}
+                    <li><a href="{% url 'questions:question_result' next_pqr.id %}">{{ next_pqr.seq_num }}</a></li>
+                    <li><a href="{% url 'questions:question_result' next_pqr.id %}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
 {% endblock %}
 
 

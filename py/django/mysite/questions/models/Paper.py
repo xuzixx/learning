@@ -9,13 +9,31 @@ from PaperUser import *
 
 P_STATUS_SIZE = (
     ('DOING','正在答题'),
-    ('GRADING','待评分'),
+    ('GRADING','简答题待评分'),
     ('DONE','已答完'),
     ('CANCAL','作废'),
 )
 
+P_TYPE_SIZES = (
+    ("ALL" , "默认全部"),
+    ("RANDOM" , "随机出题"),
+)
+class PaperTemplate(BaseModel):
+    title = models.CharField(u"试卷模板标题", max_length = 250, default = "TEMPLATE (%s)" % datetime.date.today())
+    questions = models.ManyToManyField(Question, 
+        related_name = 'paper_templates'
+    )
+    #questions = models.ManyToManyField(Question)
+    type = models.CharField(u"出题方式", max_length = 10, choices = P_TYPE_SIZES, default = "ALL")
+    conf_sc = models.IntegerField(u"单选题随机数目", default = 0)
+    conf_mc = models.IntegerField(u"多选题随机数目", default = 0)
+    conf_sa = models.IntegerField(u"简答题随机数目", default = 0)
+    
+    def __unicode__(self):
+        return "<Paper: %s>" % self.title
+
+
 class Paper(BaseModel):
-    # todo 自己是自己的father
     title = models.CharField("试卷标题", max_length = 250, default = "TEST (%s)" % datetime.date.today())
     questions = models.ManyToManyField(Question, 
         through = 'PaperQuestionRelation',
@@ -27,9 +45,11 @@ class Paper(BaseModel):
         related_query_name = "paper", # tips 2
     )
     status = models.CharField("试卷状态", max_length = 10, choices = P_STATUS_SIZE, default = "DOING") 
+    template = models.ForeignKey(PaperTemplate, related_name = "papers", null = True, blank = True)
     
     def __unicode__(self):
-        return "<Paper: %s, %s>" % (self.user.name, self.id)
+        return "<Paper: %s, %s>" % (self.user.name, self.title)
+        
 
 
 

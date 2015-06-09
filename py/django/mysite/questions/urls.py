@@ -4,6 +4,9 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    # 登录
+    #url(r'^login/$', views.user_login, name = "user_login"),
+    
     # 首页
     url(r'^paper/$', views.paper_index, name = "paper_index"),
     # 新建一个paper
@@ -13,7 +16,7 @@ urlpatterns = [
     # paper结果
     url(r'^paper/(?P<paper_id>[0-9]+)/result/$', views.paper_result, name = 'paper_result'),
     # user提交一道题答案
-    url(r'^user_submit/(?P<pqr_id>[0-9]+)/$', views.user_submit, name = 'user_submit'),
+    #url(r'^user_submit/(?P<pqr_id>[0-9]+)/$', views.user_submit, name = 'user_submit'),
 
     # question内容 !! pqr_id 不是question_id
     url(r'^question/(?P<pqr_id>[0-9]+)/$', views.question_detail, name = 'question_detail'),

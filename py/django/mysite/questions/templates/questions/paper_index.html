@@ -2,14 +2,37 @@
 {% load staticfiles %}
 
 {% block content %}
-{% if papers %}
-    <h1>所有试卷</h1>
-    <ul>
-        {% for paper in papers %}
-        <li>{{ paper.user.name }}:<a href="{% url 'questions:paper_detail' paper.id %}">{{ paper.title }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No paper are available.</p>
-{% endif %}
+    {% if papers %}
+        <div class = 'row'>
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>已参与试卷:</h1>
+                <table class = 'table'>
+                    <tr><th class = 'center'>试卷</th><th>状态</th></tr>
+                    {% for paper in papers %}
+                    <tr>
+                        <td class = 'center'><a href="{% url 'questions:paper_detail' paper.id %}">{{ paper.title }}</a></td>
+                        <td>{{ paper.get_status_display }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    {% endif %}
+    <div class = 'row'>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1>新的试卷:</h1>
+            <table class = 'table'>
+                <tr><th class = 'center'>试卷</th></tr>
+                {% for ptmpl in paper_templates %}
+                <tr>
+                    <td class = 'center'><a href="{% url 'questions:paper_new' %}?ptmpl={{ ptmpl.id }}">{{ ptmpl.title }}</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+         <div class="col-md-2"></div>
+     </div>
 {% endblock %}
