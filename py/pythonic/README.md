@@ -2,7 +2,7 @@
 
 > [1\_ex](1_ex.py)
 >
-> > 01 用两个元素之间有对应关系的list构造一个dict:
+> > 01 用两个元素之间有对应关系的list构造一个dict zip
 >
 > > 02 list, string 倒序
 >
@@ -20,5 +20,10 @@
 >
 > [不要使用可变的默认参数](5_deault_arg.py) 
 
+### 额外的数据类型
+
+> [6\_data\_structure](6_data_structure.py)
+>
+> namedtuple 命名元组 (应用 读取CSV 和 Point坐标)
 
 
