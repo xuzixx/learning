@@ -69,7 +69,7 @@ which gives Django the Python import path to your mysite/settings.py file.\]<br/
     之前想每一个APP，使用自己的一套上传文件文件夹（放在自己APP目录里面的media里面通过inspect获得了APP的绝对路径）
     主settings.py里面
     1、MEDIA_URL = '/media/'
-    2、APP对应路径下，model中指定了FileSystemStorage
+    2、APP对应路径下，model中指定了FileSystemStorage(models.py.bak)
     3、在自己的APP里面的url里面添加了
     urlpatterns += static(settings.MEDIA_URL, document_root = APP_UPLOAD_DIR)
     # 这样的问题就是图片的访问路径会有问题
