@@ -22,8 +22,10 @@
 
 ### 额外的数据类型
 
-> [6\_data\_structure](6_data_structure.py)
+> \[6\_data\_structure\]
 >
-> namedtuple 命名元组 (应用 读取CSV 和 Point坐标)
+> > 1 namedtuple 命名元组 (应用 读取CSV 和 Point坐标)
+>
+> > 
 
 

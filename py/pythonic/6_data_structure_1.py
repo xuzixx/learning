@@ -5,6 +5,7 @@ from collections import namedtuple
 """
     namedtuple 命名元组 
     下面三个方法 namedtuple 第二个参数略有区别
+    _make
 """
 def collections_namedtuple_test():
     """
