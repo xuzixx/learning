@@ -26,6 +26,6 @@
 >
 > > 1 namedtuple 命名元组 (应用 读取CSV 和 Point坐标)
 >
-> > 
+> > 2 deque
 
 
