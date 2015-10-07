@@ -51,6 +51,9 @@ def basic_test():
     print p
 
 def csv_sqlite_example():
+    """
+        _make
+    """
     EmployeeRecord = namedtuple('EmployeeRecord', 'name, age, title, department')
     import csv
     for emp in map(EmployeeRecord._make, csv.reader(open('employees.csv', 'rb'))):
