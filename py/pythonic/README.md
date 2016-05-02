@@ -19,6 +19,10 @@
 > [文件编码/探测/转换](4_encoding.py) chardect codecs
 >
 > [不要使用可变的默认参数](5_deault_arg.py) 
+>
+> [print %s 各种](7_print_str.py)
+>
+> [contextmanager 和 yield](8_contextmanager_yield.py) 处理类似mongo session
 
 ### 额外的数据类型
 
@@ -28,4 +32,4 @@
 >
 > > 2 deque
 
-
+### 
