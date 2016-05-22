@@ -20,7 +20,7 @@ with test(123) as b:
 print "--- over"
 """
 session 应用，finally close
-output : 
+output :
     [1] <contextlib.GeneratorContextManager object at 0x103b22a90>
     [2] <class 'contextlib.GeneratorContextManager'>
     [3] 123
