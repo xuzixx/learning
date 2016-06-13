@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-CURDIR=`pwd`
-export GOPATH="$CURDIR"
-echo $GOPATH
-

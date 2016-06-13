@@ -29,5 +29,26 @@ go run src/project_main/main.go
 ##### 性能测试
 `go test -v bench_test.go -test.bench=".*"`
 
-
 http://www.cnblogs.com/yjf512/archive/2013/01/18/2865915.html
+
+
+### log
+
+github.com/op/go-logging
+
+http://xiaorui.cc/2016/03/15/%E4%BD%BF%E7%94%A8golang-log%E5%BA%93%E5%8C%85%E5%AE%9E%E7%8E%B0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
