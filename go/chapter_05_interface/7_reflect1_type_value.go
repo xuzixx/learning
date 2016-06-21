@@ -2,32 +2,32 @@
 package main
 
 import (
-    "fmt"
-    "reflect"
+	"fmt"
+	"reflect"
 )
 
 /*
-    http://www.kancloud.cn/kancloud/the-way-to-go/72529
+   http://www.kancloud.cn/kancloud/the-way-to-go/72529
 */
 func main() {
-    var x float64 = 3.4
-    fmt.Println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-    fmt.Println(" var x float64 = 3.4")
-    fmt.Println("x type:", reflect.TypeOf(x))
-    v := reflect.ValueOf(x)
-    fmt.Println("v type:", reflect.TypeOf(v))
-    fmt.Printf("v value: %#v\n", v)
-    fmt.Println("v.Type() type:", v.Type())
-    fmt.Println("v.Kind() kind:", v.Kind())
-    fmt.Println("v.Float() value:", v.Float())
-    fmt.Println("v.Interface():", v.Interface())
-    fmt.Printf("value is %5.2e\n", v.Interface())
-    y := v.Interface().(float64)
-    fmt.Printf("y %#v\n", y)
+	var x float64 = 3.4
+	fmt.Println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+	fmt.Println(" var x float64 = 3.4")
+	fmt.Println("x type:", reflect.TypeOf(x))
+	v := reflect.ValueOf(x)
+	fmt.Println("v type:", reflect.TypeOf(v))
+	fmt.Printf("v value: %#v\n", v)
+	fmt.Println("v.Type() type:", v.Type())
+	fmt.Println("v.Kind() kind:", v.Kind())
+	fmt.Println("v.Float() value:", v.Float())
+	fmt.Println("v.Interface():", v.Interface())
+	fmt.Printf("value is %5.2e\n", v.Interface())
+	y := v.Interface().(float64)
+	fmt.Printf("y %#v\n", y)
 
-    if v.Kind() == reflect.Float64 {
-        fmt.Println("v.Kind() == reflect.Float64")
-    }
+	if v.Kind() == reflect.Float64 {
+		fmt.Println("v.Kind() == reflect.Float64")
+	}
 }
 
 /* output:
